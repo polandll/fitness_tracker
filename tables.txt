@@ -1,0 +1,47 @@
+CREATE TABLE user (
+    user_id UUID,
+    firstname TEXT,
+    lastname TEXT,
+    gender TEXT,
+    age INT,
+    calorie_goal INT,
+    macro_goal LIST<INT>,
+    badges MAP<TEXT, date>,                 // badge name, date earned
+    meals LIST <TUPLE<INT, TEXT, DATE>>, //meal_id, type, meal_date
+    PRIMARY KEY (lastname, firstname, user_id)
+);
+
+CREATE TABLE meal_item (
+    item_id INT,
+    name TEXT,
+    serv_amt TEXT,
+    macros LIST<INT>, // protein, fat, carb
+    calories INT,
+    PRIMARY KEY (item_id)
+);
+
+CREATE TABLE meal (
+    type TEXT,
+    meal_id INT,
+    items SET< MAP< INT, FLOAT>>, // item_id, num_servings
+    PRIMARY KEY (type, meal_id) 
+);
+
+CREATE TYPE single_set (
+    weight INT,
+    num_reps INT
+);
+
+CREATE TABLE exercise_item (
+    item_id INT,
+    name TEXT,
+    set single_set // Weight, num_reps
+    PRIMARY KEY (item_id)
+);
+
+CREATE TABLE workout (
+    type TEXT,
+    workout_id INT,
+    items SET< MAP< INT, single_set >>,  // item_id, set
+    PRIMARY KEY (type, workout_id) 
+);
