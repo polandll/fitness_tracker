@@ -7,8 +7,8 @@ CREATE TABLE user (
     calorie_goal INT,
     macro_goal LIST<INT>,
     badges MAP<TEXT, date>,                 // badge name, date earned
-    meals LIST <TUPLE<INT, TEXT, DATE>>, //meal_id, type, meal_date
-    workouts LIST < MAP< INT, DATE>> // workout_id, workout_date
+    meals LIST <TUPLE<INT, TEXT, DATE>>,    //meal_id, type, meal_date
+    workouts LIST < MAP< INT, DATE>>,        // workout_id, workout_date
     PRIMARY KEY (lastname, firstname, user_id)
 );
 
