@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import newpict from './astra_zepher2.png';
+import newpict from './astra_zephyr2.png';
 import './App.css';
 
 function App() {
