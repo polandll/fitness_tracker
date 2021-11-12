@@ -1,0 +1,61 @@
+REPLACE THIS WITH THE FITNESS TRACKER SCHEMA
+
+type Address @cql_entity(target: UDT) @cql_input {
+      street: String
+      city: String
+      state: String
+      zipCode: String @cql_column(name: "zip_code")
+}
+# LLP 08.06.21 I PROBABLY NEED TO ADD ISBN TO THE REVIEW UDT
+type Review @cql_entity(target: UDT) @cql_input {
+  bookTitle: String @cql_column(name: "book_title")
+  comment: String
+  rating: Int
+  reviewDate: Date @cql_column(name: "review_date")
+}
+# Stargate does not require definition of fields in @key,
+# it uses the primary key
+type Book @key @cql_entity(name: "book") @cql_input {
+  title: String! @cql_column(partitionKey: true, name: "book_title")
+  isbn: String @cql_column(clusteringOrder: ASC)
+  author: [String] @cql_index(name: "author_idx", target: VALUES)
+  language: [String] @cql_index(name: "lang_idx", target: VALUES)
+  pub_year: Int
+  genre: [String] @cql_column(typeHint: "set<varchar>") @cql_index(name: "genre_idx", target: VALUES)
+  format: [String] @cql_column(typeHint: "set<varchar>") @cql_index(name: "format_idx", target: VALUES)
+}
+
+type BookI @key @cql_entity(name: "booki") @cql_input {
+  isbn: String! @cql_column(partitionKey: true)
+  title: String @cql_column(clusteringOrder: ASC, name: "book_title")
+  author: [String] @cql_index(name: "authori_idx", target: VALUES)
+}
+
+type SelectBookResult @cql_payload {
+  data: [Book]
+  pagingState: String
+}
+
+type InsertBookResponse @cql_payload {
+  applied: Boolean!
+  book: Book!
+}
+
+type User @key @cql_entity(name: "user") @cql_input {
+  name: String! @cql_column(partitionKey: true)
+  user_id: Uuid! @cql_column(clusteringOrder: ASC)
+  birthdate: Date @cql_index(name: "date_idx")
+  age: Int
+  email: [String] @cql_column(typeHint: "set<varchar>")
+  reviews: [Review]  @cql_index(name: "review_idx", target: VALUES)
+  address: [Address]
+}
+
+type UserOther @key @cql_entity(name: "user_other") @cql_input {
+  user_id: Uuid! @cql_column(partitionKey: true)
+  name: String! @cql_column(clusteringOrder: ASC)
+  birthdate: Date @cql_index(name: "dateu_idx")
+  email: [String] @cql_column(typeHint: "set<varchar>")
+  reviews: [Review]  @cql_index(name: "reviewu_idx", target: VALUES)
+  address: [Address]
+}
