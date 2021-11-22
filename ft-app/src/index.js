@@ -1,9 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { HashRouter, Routes, Route } from 'react-router-dom'
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 
-import App from './App'
-import './App.css'
+import Home from './pages/Home'
+import Meals from './pages/Meals'
+
+import './index.css'
 
 const client = new ApolloClient({
   uri: 'https://12f8c3dc-e431-45a1-8fbb-8dfe0adf1ceb-us-west1.apps.astra.datastax.com/api/graphql/fitness_tracker',
@@ -13,9 +16,22 @@ const client = new ApolloClient({
   },
 })
 
+const App = () => {
+  return (
+    <HashRouter>
+      <Routes>
+        <Route path='/meals' element={< Meals />} />
+        <Route path='/' element={< Home />} />
+      </Routes>
+    </HashRouter>
+  );
+}
+
+export default App
+
 ReactDOM.render(
   <ApolloProvider client={client}>
     <App />
   </ApolloProvider>,
   document.getElementById('root')
-)
+);
