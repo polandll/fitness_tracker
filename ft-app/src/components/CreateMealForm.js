@@ -18,7 +18,7 @@ const CREATE_MEAL = gql`
 const CreateMealForm = () => {
   const [meal_id, setMealId] = useState('')
   const [type, setType] = useState('')
-  const [items, setItems] = useState('')
+  const [items, setItems] = useState([])
   const [createMeal, { data }] = useMutation(CREATE_MEAL)
 
   const handleSubmit = e => {

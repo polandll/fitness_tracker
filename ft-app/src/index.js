@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { HashRouter, Routes, Route } from 'react-router-dom'
+import { Route } from 'wouter'
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 
 import Home from './pages/Home'
@@ -19,13 +19,11 @@ const client = new ApolloClient({
 
 const App = () => {
   return (
-    <HashRouter>
-      <Routes>
-      <Route path='/mealItems' element={< MealItems />} />
-        <Route path='/meals' element={< Meals />} />
-        <Route path='/' element={< Home />} />
-      </Routes>
-    </HashRouter>
+    <>
+      <Route path='/'><Home /></Route>
+      <Route path='/:userId/meals'><Meals /></Route>
+      <Route path='/:userId/mealItems'><MealItems /></Route>
+    </>
   );
 }
 
