@@ -1,7 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, TextField } from '@material-ui/core'
-import { gql, useMutation } from '@apollo/client'
+import { gql, useApolloClient, useLazyQuery } from '@apollo/client'
 import { v4 as uuid } from 'uuid'
+import { useLocation } from 'wouter'
+
+const GET_USER = gql`
+  query GetUser($firstName: String! $lastName: String!) {
+    user(
+      value: {
+        firstname: $firstName
+        lastname: $lastName
+      }
+    ) {
+      values { 
+        firstname
+      	lastname
+        user_id
+      }
+    }
+  }
+`
 
 const CREATE_USER = gql`
   mutation CreateUser($firstName: String! $lastName: String! $userId: Uuid!) {
@@ -18,15 +36,34 @@ const CREATE_USER = gql`
 `
 
 const CreateUserForm = () => {
+  const [isSubmitted, setSubmitted] = useState(false)
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
-  const [createUser, { data }] = useMutation(CREATE_USER)
+  const [, setLocation] = useLocation();
+  const [getUser, { data, error, loading }] = useLazyQuery(GET_USER)
+  const client = useApolloClient()
+
+  useEffect(() => {
+    if (isSubmitted && data?.user.values.length) {
+      setLocation(`/${data.user.values[0].user_id}`)
+    }
+    else if (isSubmitted) {
+      const userId = uuid()
+      client.mutate({
+        mutation: CREATE_USER,
+        variables: { firstName: firstName, lastName: lastName, userId: userId }
+      })
+    }
+  }, [client, data, firstName, isSubmitted, lastName, setLocation])
+
+  if (loading) return <p>Loading ...</p>
+
+  if (error) return <p>Error!</p>
 
   const handleSubmit = e => {
     e.preventDefault()
-    const userId = uuid()
-    console.log(firstName, lastName)
-    createUser({ variables: { firstName: firstName, lastName: lastName, userId: userId }})
+    setSubmitted(true)
+    getUser({ variables: { firstName: firstName, lastName: lastName }})
   }
 
   return (
