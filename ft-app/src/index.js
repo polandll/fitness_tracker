@@ -5,6 +5,7 @@ import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 
 import Home from './pages/Home'
 import Meals from './pages/Meals'
+import MealItems from './pages/MealItems'
 
 import './index.css'
 
@@ -20,6 +21,7 @@ const App = () => {
   return (
     <HashRouter>
       <Routes>
+      <Route path='/mealItems' element={< MealItems />} />
         <Route path='/meals' element={< Meals />} />
         <Route path='/' element={< Home />} />
       </Routes>
