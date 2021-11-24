@@ -6,6 +6,7 @@ import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 import Home from './pages/Home'
 import Meals from './pages/Meals'
 import MealItems from './pages/MealItems'
+import UserInfo from './pages/UserInfo'
 
 import './index.css'
 
@@ -21,6 +22,7 @@ const App = () => {
   return (
     <>
       <Route path='/'><Home /></Route>
+      <Route path='/:userId'><UserInfo /></Route>
       <Route path='/:userId/meals'><Meals /></Route>
       <Route path='/:userId/mealItems'><MealItems /></Route>
     </>
