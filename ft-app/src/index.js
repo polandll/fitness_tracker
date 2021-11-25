@@ -22,7 +22,9 @@ const App = () => {
   return (
     <>
       <Route path='/'><Home /></Route>
-      <Route path='/:userId'><UserInfo /></Route>
+      <Route path='/:userId'>
+        {params => <UserInfo userId={params.userId} />}
+      </Route>
       <Route path='/:userId/meals'><Meals /></Route>
       <Route path='/:userId/mealItems'><MealItems /></Route>
     </>
