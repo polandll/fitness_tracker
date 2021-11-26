@@ -40,14 +40,14 @@ const UserInfo = ({userId}) => {
 
   const user = data.user.values[0];
 
-  const today = new Date();
-  const today_date_str = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+  var today = new Date();
+  var today_date_str = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
   var today_meals = 0;
   if (user.meals) {
       for (let meal of user.meals) {
-        let meal_date = meal.item2;
-        let meal_date_str = meal_date.getFullYear() + '-' + (meal_date.getMonth() + 1) + '-' + meal_date.getDate();
+        var meal_date = new Date(meal.item2);
+        var meal_date_str = meal_date.getFullYear() + '-' + (meal_date.getMonth() + 1) + '-' + meal_date.getDate();
         if (meal_date_str === today_date_str) {
             today_meals++;
         }
@@ -58,6 +58,7 @@ const UserInfo = ({userId}) => {
     <div>
       <h1>{user.firstname}' stats</h1>
       <div>Number of meals: {today_meals}</div>
+      <div>Calorie goal: {user.calorie_goal}</div>
     </div>
   );
 }
