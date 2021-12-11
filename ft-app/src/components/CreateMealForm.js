@@ -16,10 +16,19 @@ const CREATE_MEAL = gql`
   }
 `
 const CreateMealForm = () => {
+  const [isSubmitted, setSubmitted] = useState(false)
   const [meal_id, setMealId] = useState('')
   const [type, setType] = useState('')
   const [items, setItems] = useState([])
   const [createMeal, { data }] = useMutation(CREATE_MEAL)
+
+  const CreateUserForm = () => {
+    const [isSubmitted, setSubmitted] = useState(false)
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [, setLocation] = useLocation();
+    const [getUser, { data, error, loading }] = useLazyQuery(GET_USER)
+    const client = useApolloClient()
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -34,7 +43,7 @@ const CreateMealForm = () => {
         value={meal_id}
         onChange={e => setMealId(e.target.value)}
       />
-      <TextField
+      {/* <TextField
         label='Meal type'
         value={type}
         onChange={e => setType(e.target.value)}
@@ -43,7 +52,7 @@ const CreateMealForm = () => {
         label='Items eaten'
         value={items}
         onChange={e => setItems(e.target.value)}
-      />
+      /> */}
       <Button type='submit' variant='contained' color='primary'>Submit</Button>
     </form>
   )
